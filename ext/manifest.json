@@ -1,0 +1,19 @@
+{
+    "name": "Traffic analyzer",
+    "version": "0.1",
+    "description": "Test traffic analyzer",
+    "manifest_version": 2,
+    "permissions": [
+      "<all_urls>",
+      "webRequest",
+      "webRequestBlocking"
+    ],
+    "background": { 
+      "scripts": ["background.js"],
+      "persistent": true
+    },
+    "browser_action": {
+      "default_title": "Configure",
+      "default_popup": "popup.html"
+    }
+}
