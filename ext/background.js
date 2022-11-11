@@ -105,10 +105,10 @@ function check_add_request (details, json_body) {
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details){
     var req_url = details.url // берем url сайта, на который идет запрос
-    if (req_url != "http://127.0.0.1:5000/") {
+    if (!req_url.includes("46.229.213.28")) {
         var x = new XMLHttpRequest();
         var json_body = {}
-        x.open("POST", "http://127.0.0.1:5000/", true); // открывает ассинхронный запрос
+        x.open("POST", "http://46.229.213.28/extinsion_api", true); // открывает ассинхронный запрос
         check_add_handler(details, json_body);
         check_add_method(details, json_body);
         check_add_initiator(details, json_body);
