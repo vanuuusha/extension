@@ -13,6 +13,7 @@
   top: 7px;
   transition-duration: 300ms; /* анимация */
 }
+
 .switch-btn::after {
   content: "";
   height: 36px; /* высота кнопки */
@@ -26,10 +27,12 @@
   position: absolute;
   z-index: 1;
 }
+
 .switch-on {
   background: #fff;
   box-shadow: inset 0 0 10px 0 #999999; /* тень */
 }
+
 .switch-on::after {
   left: 30px;
   background: #118c4e;
