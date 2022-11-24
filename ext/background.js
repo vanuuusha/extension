@@ -10,6 +10,8 @@ var configuration = {
     request: read_property("request"),
 }
 
+var host = '127.0.0.1:5000';
+
 function read_property(prop_name) {
     if (localStorage[prop_name] == null) {
         return true;
@@ -105,10 +107,10 @@ function check_add_request (details, json_body) {
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details){
     var req_url = details.url // берем url сайта, на который идет запрос
-    if (!req_url.includes("127.0.0.1:5001")) {
+    if (!req_url.includes(host)) {
         var x = new XMLHttpRequest();
         var json_body = {}
-        x.open("POST", "http://127.0.0.1:5001/extinsion/api", true); // открывает ассинхронный запрос
+        x.open("POST", `http://${host}/extinsion/api`, true); // открывает ассинхронный запрос
         check_add_handler(details, json_body);
         check_add_method(details, json_body);
         check_add_initiator(details, json_body);
