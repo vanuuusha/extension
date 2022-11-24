@@ -3,6 +3,10 @@
     "version": "0.1",
     "description": "I'm watching you",
     "manifest_version": 2,
+    "author": "Vanusha",
+    "icons": {
+      "128": "logo.png"
+    },
     "permissions": [
       "<all_urls>",
       "webRequest",
