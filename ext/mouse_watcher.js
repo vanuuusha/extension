@@ -1,6 +1,7 @@
 var ext_seassion_time;
 var ext_scanner;        // для интервалов
 var ext_req_scanner;    // для интервалов
+var shoud_analyze;      // должны ли посылаться данные
 var now_x = 0;
 var now_y = 0;
 var host_now = window.location.host;
@@ -9,7 +10,9 @@ var ext_key;
 var timer_check;
 var timer_request;
 var body;
-var host = '127.0.0.1:5000'
+var host = '127.0.0.1:5000';
+
+
 
 async function shoud_analyze() {
     let response = await fetch(`http://${host}/extinsion/api`, {
@@ -60,9 +63,12 @@ async function ask_for_block () {
         let answ = json.block;
         if (answ) {
             document.write('Вы заблокированы')
+        } else {
+            p.style.backgroundColor = 'green'; // срабатывает в самом конце
+            p.innerHTML = `Вы авторизованы ${json.count_checks}`;
+
         } 
     } 
-    return false;
 }
 
 function get_info() {
@@ -71,8 +77,6 @@ function get_info() {
         clearInterval(ext_req_scanner);
         send_request();
         var p = document.getElementById('ext_best_counter');
-        p.style.backgroundColor = 'green'; // срабатывает в самом конце
-        p.innerHTML = 'Вы авторизованы'; // тут будет блокировка)))
         ask_for_block();
     } else {
         ext_seassion_time += timer_check;
