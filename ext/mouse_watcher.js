@@ -2,8 +2,8 @@ var ext_seassion_time;
 var ext_scanner;        // для интервалов
 var ext_req_scanner;    // для интервалов
 var shoud_analyze;      // должны ли посылаться данные
-var now_x = 0;
-var now_y = 0;
+var now_x = window.innerWidth / 2;
+var now_y = window.innerWidth / 2;
 var host_now = window.location.host;
 var user_agent = navigator.userAgent;
 var ext_key;
@@ -11,6 +11,7 @@ var timer_check;
 var timer_request;
 var body;
 var host = '127.0.0.1:5000';
+var first_mouth_move = true;
 
 
 
@@ -83,7 +84,8 @@ function get_info() {
         body[ext_seassion_time / timer_check] = {
             X: now_x,
             Y :now_y,
-            timestamp: ext_seassion_time
+            timestamp: ext_seassion_time,
+            url: window.location.href
         };
         var p = document.getElementById('ext_best_counter');
         p.innerHTML = `${ext_seassion_time}`;
@@ -102,14 +104,16 @@ function send_request() {
     localStorage.setItem(ext_key, ext_seassion_time);
     body = {
         userAgent: user_agent, 
-        host: host_now
+        x: window.innerWidth,
+        y: window.innerHeight
     };
 }
 
-window.onload = async function () {
+var start = async function () {
     body = {
         userAgent: user_agent, 
-        host: host_now
+        x: window.innerWidth,
+        y: window.innerHeight
     };
     ext_key = 'ext_key';
     timer_request = 4000;
@@ -119,9 +123,15 @@ window.onload = async function () {
     ext_req_scanner = setInterval(send_request, timer_request);
 }
 
-document.onmousemove = function (event) {
-    now_x = event.pageX;
-    now_y = event.pageY;
+document.onload = async function() {
+    document.onmousemove = function (event) {
+        now_x = event.pageX;
+        now_y = event.pageY;
+        if (first_mouth_move) {
+            start();
+            first_mouth_move = false;
+        }
+    }
 }
 
 
@@ -133,7 +143,7 @@ p.style.backgroundColor = 'red';
 p.style.position =  'fixed';
 p.style.zIndex = '3000';
 p.style.bottom = '5px';
-p.style.left = '500px';
+p.style.left = `${window.innerWidth / 2 - 150}px`;
 p.style.fontSize = '20px';
 p.innerHTML = 'Вы авторизованы';
 p.style.height = '40px';

@@ -13,10 +13,6 @@
       "webRequestBlocking",
       "storage"
     ],
-    "background": { 
-      "scripts": ["background.js"],
-      "persistent": true
-    },
     "content_scripts": [
       {
       "matches": ["https://edu.gubkin.ru/*"],
