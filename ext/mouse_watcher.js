@@ -11,8 +11,6 @@ var timer_check;
 var timer_request;
 var body;
 var host = '127.0.0.1:5000';
-var first_mouth_move = true;
-
 
 
 async function shoud_analyze() {
@@ -40,7 +38,7 @@ async function check_storage() {
         return 0;
     }
     else {
-        if (storage == 15005) {
+        if (storage >= 15005) {
         var answ = await shoud_analyze();
             if (!answ) {
                 return 0;
@@ -79,6 +77,7 @@ function get_info() {
         send_request();
         var p = document.getElementById('ext_best_counter');
         ask_for_block();
+        console.log('ask_for_block');
     } else {
         ext_seassion_time += timer_check;
         body[ext_seassion_time / timer_check] = {
@@ -117,13 +116,21 @@ var start = async function () {
     };
     ext_key = 'ext_key';
     timer_request = 4000;
-    timer_check = 5;
+    timer_check = 10;
     ext_seassion_time = await check_storage();
-    ext_scanner = setInterval(get_info, timer_check);
-    ext_req_scanner = setInterval(send_request, timer_request);
+
+    if (ext_seassion_time < 15000) {
+        ext_scanner = setInterval(get_info, timer_check);
+        ext_req_scanner = setInterval(send_request, timer_request);
+    } else {
+        ask_for_block();
+        p.style.backgroundColor = 'green'; // срабатывает если все хорошо
+        p.innerHTML = `Вы авторизованы`;
+    }
 }
 
-document.onload = async function() {
+window.onload = function() {
+    var first_mouth_move = true;
     document.onmousemove = function (event) {
         now_x = event.pageX;
         now_y = event.pageY;
@@ -134,8 +141,13 @@ document.onload = async function() {
     }
 }
 
+function exit_from_page() {
+    clearInterval(ext_scanner);
+    clearInterval(ext_req_scanner);
+    send_request();
+}
 
-window.addEventListener("unload", send_request());
+window.addEventListener("beforeunload", exit_from_page);
 let parent = document.querySelector('body')
 let p = document.createElement('div');
 p.id = 'ext_best_counter';
@@ -145,6 +157,6 @@ p.style.zIndex = '3000';
 p.style.bottom = '5px';
 p.style.left = `${window.innerWidth / 2 - 150}px`;
 p.style.fontSize = '20px';
-p.innerHTML = 'Вы авторизованы';
+p.innerHTML = 'Проверка';
 p.style.height = '40px';
 parent.insertBefore(p, parent.firstElementChild);
